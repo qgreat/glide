@@ -232,7 +232,9 @@ public class Glide implements ComponentCallbacks2 {
   @SuppressWarnings("deprecation")
   private static void initializeGlide(@NonNull Context context, @NonNull GlideBuilder builder) {
     Context applicationContext = context.getApplicationContext();
+//    获取注解生成的GlideModules
     GeneratedAppGlideModule annotationGeneratedModule = getAnnotationGeneratedGlideModules();
+//    manifest里的GlideModule
     List<com.bumptech.glide.module.GlideModule> manifestModules = Collections.emptyList();
     if (annotationGeneratedModule == null || annotationGeneratedModule.isManifestParsingEnabled()) {
       manifestModules = new ManifestParser(applicationContext).parse();
@@ -254,7 +256,7 @@ public class Glide implements ComponentCallbacks2 {
         iterator.remove();
       }
     }
-
+//只是打印日志
     if (Log.isLoggable(TAG, Log.DEBUG)) {
       for (com.bumptech.glide.module.GlideModule glideModule : manifestModules) {
         Log.d(TAG, "Discovered GlideModule from manifest: " + glideModule.getClass());
@@ -347,7 +349,7 @@ public class Glide implements ComponentCallbacks2 {
     this.defaultRequestOptionsFactory = defaultRequestOptionsFactory;
 
     final Resources resources = context.getResources();
-
+// XXX: Registry的创建
     registry = new Registry();
     registry.register(new DefaultImageHeaderParser());
     // Right now we're only using this parser for HEIF images, which are only supported on OMR1+.
@@ -700,6 +702,7 @@ public class Glide implements ComponentCallbacks2 {
   private static RequestManagerRetriever getRetriever(@Nullable Context context) {
     // Context could be null for other reasons (ie the user passes in null), but in practice it will
     // only occur due to errors with the Fragment lifecycle.
+
     Preconditions.checkNotNull(
         context,
         "You cannot start a load on a not yet attached View or a Fragment where getActivity() "

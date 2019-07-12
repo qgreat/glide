@@ -232,6 +232,7 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback,
         notifyFailed();
         return;
       }
+      // 主要就是在它里面执行的
       runWrapped();
     } catch (CallbackException e) {
       // If a callback not controlled by Glide throws an exception, we should avoid the Glide
@@ -305,6 +306,8 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback,
     currentThread = Thread.currentThread();
     startFetchTime = LogTime.getLogTime();
     boolean isStarted = false;
+    // currentGenerator就是SourceGenerator对象
+   //   runGenerators最重要的就是执行了currentGenerator的startNext方法，这里将会真正的去加载网络资源：
     while (!isCancelled && currentGenerator != null
         && !(isStarted = currentGenerator.startNext())) {
       stage = getNextStage(stage);
@@ -415,6 +418,8 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback,
     }
     Resource<R> resource = null;
     try {
+//      首先创建一个Resource类型的变量，通过decodeFromData方法把输入流解码并返回给resource，
+//      由此可也看出，解码主要是在decodeFromData方法中：
       resource = decodeFromData(currentFetcher, currentData, currentDataSource);
     } catch (GlideException e) {
       e.setLoggingDetails(currentAttemptingKey, currentDataSource);
@@ -469,6 +474,7 @@ class DecodeJob<R> implements DataFetcherGenerator.FetcherReadyCallback,
       }
       return result;
     } finally {
+//      在这里已经体现loadData.fetcher这个fetcher的用意，主要是去关闭输入流和HttpUrlConnection的。
       fetcher.cleanup();
     }
   }

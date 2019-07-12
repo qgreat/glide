@@ -42,6 +42,8 @@ public class DecodePath<DataType, ResourceType, Transcode> {
 
   public Resource<Transcode> decode(DataRewinder<DataType> rewinder, int width, int height,
       @NonNull Options options, DecodeCallback<ResourceType> callback) throws GlideException {
+    // 核心代码
+    // 继续调用DecodePath的decodeResource方法去解析出数据
     Resource<ResourceType> decoded = decodeResource(rewinder, width, height, options);
     Resource<ResourceType> transformed = callback.onResourceDecoded(decoded);
     return transcoder.transcode(transformed, options);
@@ -52,6 +54,7 @@ public class DecodePath<DataType, ResourceType, Transcode> {
       int height, @NonNull Options options) throws GlideException {
     List<Throwable> exceptions = Preconditions.checkNotNull(listPool.acquire());
     try {
+      // 核心代码
       return decodeResourceWithList(rewinder, width, height, options, exceptions);
     } finally {
       listPool.release(exceptions);

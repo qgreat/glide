@@ -40,6 +40,7 @@ class SourceGenerator implements DataFetcherGenerator,
 
   @Override
   public boolean startNext() {
+    //到这里就太关键了，因为很多人都死在这一步上
     if (dataToCache != null) {
       Object data = dataToCache;
       dataToCache = null;
@@ -103,6 +104,7 @@ class SourceGenerator implements DataFetcherGenerator,
   @Override
   public void onDataReady(Object data) {
     DiskCacheStrategy diskCacheStrategy = helper.getDiskCacheStrategy();
+    // XXX: 硬盘缓存相关代码
     if (data != null && diskCacheStrategy.isDataCacheable(loadData.fetcher.getDataSource())) {
       dataToCache = data;
       // We might be being called back on someone else's thread. Before doing anything, we should

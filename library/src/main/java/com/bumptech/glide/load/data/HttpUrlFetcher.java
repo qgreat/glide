@@ -56,6 +56,7 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
       @NonNull DataCallback<? super InputStream> callback) {
     long startTime = LogTime.getLogTime();
     try {
+//      它会调用loadDataWithRedirects方法来返回一个InputStream输入流，来看看loadDataWithRedirects的源码
       InputStream result = loadDataWithRedirects(glideUrl.toURL(), 0, null, glideUrl.getHeaders());
       callback.onDataReady(result);
     } catch (IOException e) {
@@ -140,6 +141,7 @@ public class HttpUrlFetcher implements DataFetcher<InputStream> {
   private InputStream getStreamForSuccessfulRequest(HttpURLConnection urlConnection)
       throws IOException {
     if (TextUtils.isEmpty(urlConnection.getContentEncoding())) {
+      // 没有content encoding 需要特殊处理
       int contentLength = urlConnection.getContentLength();
       stream = ContentLengthInputStream.obtain(urlConnection.getInputStream(), contentLength);
     } else {

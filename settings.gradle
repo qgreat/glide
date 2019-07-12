@@ -26,5 +26,5 @@ include ':integration:okhttp3'
 include ':integration:gifencoder'
 include ':integration:recyclerview'
 include ':testutil'
-
-rootProject.name = 'glide-parent'
+// 如果制定了 glide-parent的话，外面的文件夹 名称应该改为glide-parent
+//rootProject.name = 'glide-parent'

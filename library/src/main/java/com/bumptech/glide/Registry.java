@@ -474,6 +474,7 @@ public class Registry {
   public <Data, TResource, Transcode> LoadPath<Data, TResource, Transcode> getLoadPath(
       @NonNull Class<Data> dataClass, @NonNull Class<TResource> resourceClass,
       @NonNull Class<Transcode> transcodeClass) {
+    // 这里首先从loadPathCache缓存中获取LoadPath对象，如果没有则调用getDecodePaths方法进行获取：
     LoadPath<Data, TResource, Transcode> result =
         loadPathCache.get(dataClass, resourceClass, transcodeClass);
     if (loadPathCache.isEmptyLoadPath(result)) {

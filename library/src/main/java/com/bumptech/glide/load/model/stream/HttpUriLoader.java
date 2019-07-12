@@ -31,6 +31,7 @@ public class HttpUriLoader implements ModelLoader<Uri, InputStream> {
   @Override
   public LoadData<InputStream> buildLoadData(@NonNull Uri model, int width, int height,
       @NonNull Options options) {
+//    它会调用urlLoader.buildLoadData方法，这个urlLoader就是HttpGlideUrlLoader对象，再来看看：
     return urlLoader.buildLoadData(new GlideUrl(model.toString()), width, height, options);
   }
 
