@@ -3,6 +3,7 @@ package com.bumptech.glide.load.engine;
 import android.support.annotation.NonNull;
 import android.support.annotation.VisibleForTesting;
 import android.support.v4.util.Pools;
+
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.EngineResource.ResourceListener;
@@ -13,6 +14,7 @@ import com.bumptech.glide.util.Preconditions;
 import com.bumptech.glide.util.Synthetic;
 import com.bumptech.glide.util.pool.FactoryPools.Poolable;
 import com.bumptech.glide.util.pool.StateVerifier;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -124,6 +126,7 @@ class EngineJob<R> implements DecodeJob.Callback<R>,
     return this;
   }
 
+  // XXX: 开启线程执行图片加载 
   public synchronized void start(DecodeJob<R> decodeJob) {
     this.decodeJob = decodeJob;
     GlideExecutor executor = decodeJob.willDecodeFromCache()
@@ -200,7 +203,6 @@ class EngineJob<R> implements DecodeJob.Callback<R>,
     if (isDone()) {
       return;
     }
-
     isCancelled = true;
     decodeJob.cancel();
     engineJobListener.onEngineJobCancelled(this, key);
@@ -278,7 +280,6 @@ class EngineJob<R> implements DecodeJob.Callback<R>,
       if (engineResource != null) {
         engineResource.release();
       }
-
       release();
     }
   }

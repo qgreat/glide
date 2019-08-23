@@ -182,6 +182,7 @@ public class Engine implements EngineJobListener,
 //从弱引用 获取
 //		根据创建的key对象分别调用loadFromCache和loadFromActiveResources方法来从内存中查
 //		找是否有缓存资源，如果有，则回调cb.onResourceReady来直接设置图片了。
+		//是第一级缓存，表示当前正在活动中的资源。
 		EngineResource<?> active = loadFromActiveResources(key, isMemoryCacheable);
 		if (active != null) {
 			cb.onResourceReady(active, DataSource.MEMORY_CACHE);
@@ -199,11 +200,7 @@ public class Engine implements EngineJobListener,
 			}
 			return null;
 		}
-//
-//④：分别使用engineJobFactory和decodeJobFactory构建EngineJob和DecodeJob对象，这两个对象是真正的加载资源的两个重要类，
-// EngineJob对象负责开启线程去加载资源，并且加载得资源后转换到主线程并进行回调；DecodeJob是真正的执行者，它就是去网络
-// 加载资源的地方，EngineJob开启线程，
-//		真正执行的是DecodeJob，DecodeJob之后完毕之后叫道EngineJob去分发回调。这就是这两个类的关系。
+
 		EngineJob<?> current = jobs.get(key, onlyRetrieveFromCache);
 		if (current != null) {
 			current.addCallback(cb, callbackExecutor);
@@ -212,7 +209,7 @@ public class Engine implements EngineJobListener,
 			}
 			return new LoadStatus(cb, current);
 		}
-//		EngineJob和DecodeJob的构建是基本一致的，我们看看比较复杂的DecodeJob的构建：在build方法中，首先通过pool来创建
+//		EngineJob和DecodeJob的构建是基本一致的，比较复杂的DecodeJob的构建：在build方法中，首先通过pool来创建
 // 一个DecodeJob对象，然后调用DecodeJob对象的init方法进行初始化，在初始化中值得注意的是调用了decodeHelper
 // 对象的init方法。decodeHelper方法是DecodeJob的重要辅助类，后面我们会详细的接触它。
 		EngineJob<R> engineJob =
@@ -245,6 +242,10 @@ public class Engine implements EngineJobListener,
 		jobs.put(key, engineJob);
 //上面也提到回调，这里先cb添加到engineJob.addCallback();中，然后调用EngineJob的start方法来开启线程。
 		engineJob.addCallback(cb, callbackExecutor);
+// ④：分别使用engineJobFactory和decodeJobFactory构建EngineJob和DecodeJob对象，这两个对象是真正的加载资源的两个重要类，
+// EngineJob对象负责开启线程去加载资源，并且加载得资源后转换到主线程并进行回调；DecodeJob是真正的执行者，它就是去网络
+// 加载资源的地方，EngineJob开启线程，
+// 真正执行的是DecodeJob，DecodeJob之后完毕之后叫道EngineJob去分发回调。这就是这两个类的关系。
 		engineJob.start(decodeJob);
 
 		if (VERBOSE_IS_LOGGABLE) {
@@ -335,6 +336,7 @@ public class Engine implements EngineJobListener,
 		if (resource.isMemoryCacheable()) {
 			cache.put(cacheKey, resource);
 		} else {
+			//bitmapPool.put(drawable.getBitmap()); 回收是放进bitmapPool中，因为弱引用，随时被回收
 			resourceRecycler.recycle(resource);
 		}
 	}

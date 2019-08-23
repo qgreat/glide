@@ -41,6 +41,7 @@ public class RequestTracker {
   public void runRequest(@NonNull Request request) {
     requests.add(request);
     if (!isPaused) {
+      //如果是加载状态，就调用request.begin()方法
       request.begin();
     } else {
       request.clear();

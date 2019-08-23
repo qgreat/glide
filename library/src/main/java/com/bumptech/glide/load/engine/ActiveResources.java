@@ -22,8 +22,8 @@ final class ActiveResources {
   private final Executor monitorClearedResourcesExecutor;
   @VisibleForTesting
   final Map<Key, ResourceWeakReference> activeEngineResources = new HashMap<>();
+  //  大概就是用来跟踪弱引用（或者软引用、虚引用）是否被 gc 的。
   private final ReferenceQueue<EngineResource<?>> resourceReferenceQueue = new ReferenceQueue<>();
-
   private ResourceListener listener;
 
   private volatile boolean isShutdown;

@@ -4,6 +4,7 @@ package com.bumptech.glide.manager;
  * An interface for listener to {@link android.app.Fragment} and {@link android.app.Activity}
  * lifecycle events.
  */
+// XXX: requestManager有继承的 
 public interface LifecycleListener {
 
   /**

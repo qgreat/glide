@@ -467,6 +467,11 @@ public final class GlideBuilder {
     return this;
   }
 
+  /**
+   * 初始化requestManagerRetriever，Executor，Calculator，memoryCache等等
+   * @param context
+   * @return
+   */
   @NonNull
   Glide build(@NonNull Context context) {
     if (sourceExecutor == null) {

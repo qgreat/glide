@@ -12,7 +12,7 @@ import java.io.File;
  * {@link com.bumptech.glide.load.ResourceEncoder} and the given data or
  * {@link com.bumptech.glide.load.engine.Resource}.
  *
- * @param <DataType> The type of data that will be encoded (InputStream, ByteBuffer,
+ * @param <DataType> The type of data that will be cencoded (InputStream, ByteBuffer,
  *                  Resource<Bitmap> etc).
  */
 class DataCacheWriter<DataType> implements DiskCache.Writer {

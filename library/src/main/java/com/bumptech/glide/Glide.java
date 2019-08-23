@@ -229,6 +229,11 @@ public class Glide implements ComponentCallbacks2 {
     initializeGlide(context, new GlideBuilder());
   }
 
+  /**
+   * 初始化Glide相关配置
+   * @param context
+   * @param builder
+   */
   @SuppressWarnings("deprecation")
   private static void initializeGlide(@NonNull Context context, @NonNull GlideBuilder builder) {
     Context applicationContext = context.getApplicationContext();
@@ -273,6 +278,7 @@ public class Glide implements ComponentCallbacks2 {
     if (annotationGeneratedModule != null) {
       annotationGeneratedModule.applyOptions(applicationContext, builder);
     }
+    //新建 Glide
     Glide glide = builder.build(applicationContext);
     for (com.bumptech.glide.module.GlideModule module : manifestModules) {
       try {

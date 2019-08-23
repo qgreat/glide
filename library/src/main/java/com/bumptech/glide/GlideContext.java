@@ -91,6 +91,13 @@ public class GlideContext extends ContextWrapper {
     return (TransitionOptions<?, T>) result;
   }
 
+  /**
+   * 创建一个target对象
+   * @param imageView
+   * @param transcodeClass
+   * @param <X>
+   * @return
+   */
   @NonNull
   public <X> ViewTarget<ImageView, X> buildImageViewTarget(
       @NonNull ImageView imageView, @NonNull Class<X> transcodeClass) {
